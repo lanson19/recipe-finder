@@ -1,48 +1,47 @@
 import './App.css';
-import React from 'react';
-import axios from 'axios';
+import React, {useState, useEffect} from 'react';
 
-
-let counter = 0;
+function Item(props) {
+  
+  return (
+    <div className="item">
+      <h1>{props.title}</h1>
+    </div>
+  )
+}
 
 function App() {
 
-  
-  let [recipe, setRecipe] = React.useState([]);
+  const [articles, setArticles] = useState([]);
+  const [subreddit, setSubreddit] = useState('leagueoflegends');
 
-  async function getRecipe() {
-    counter++;
-    try {
-      const response = await axios.get('http://www.recipepuppy.com/api/?i=onions,garlic&q=omelet&p=3');
-      let recipeTitle = [];
-      for(let i of response.data.results) {
-        recipeTitle.push(i);
+  useEffect(() => {
+    fetch("https://www.reddit.com/r/leagueoflegends.json").then(res => {
+      if (res.status != 200) {
+        console.log("Error");
+        return;
       }
-      setRecipe(recipe.concat(recipeTitle));
-      console.log(response.data.results);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+
+      res.json().then(data => {
+        if (data != null) {
+          setArticles(data.data.children);
+          console.log(data.data.children[0].data);
+        }
+      });
+    })
+  })
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>
-          Recipies
-        </h1>
-        <button type='button' onClick={getRecipe}>Click for Data</button> 
-        <ul>
-          {recipe.map(i => (
-            <li key={i.title}>
-              {i.title} 
-              <p>i.{i.ingredients}</p>
-            </li>
-          ))}
-        </ul>
+    <div>
+      <header>
+        
       </header>
+      {articles.map((i) =>
+        <Item key={i.data.title} title={i.data.title} link={i.data.url}></Item>
+      )}
     </div>
-  );
+  )
 }
+
 
 export default App;
