@@ -1,11 +1,28 @@
 import './App.css';
 import React, {useState, useEffect} from 'react';
 
+
+function Header(props) {
+  
+  return (
+    <form>
+      <label className="header--form">
+        <a>R/</a>
+        <input type="text" placeholder={props.subredditTitle} spellCheck="false"/>
+      </label>
+    </form>
+  )
+}
+
+
+
 function Item(props) {
+  const originalLink = "https://www.reddit.com"
   
   return (
     <div className="item">
-      <h1>{props.title}</h1>
+      <img src={props.image}></img>
+      <a href={originalLink + props.link}>{props.title}</a>
     </div>
   )
 }
@@ -25,19 +42,19 @@ function App() {
       res.json().then(data => {
         if (data != null) {
           setArticles(data.data.children);
-          console.log(data.data.children[0].data);
+          console.log(data.data.children);
         }
       });
     })
-  })
+  },[articles])
+
+  
 
   return (
     <div>
-      <header>
-        
-      </header>
+      <Header subredditTitle={subreddit}/>
       {articles.map((i) =>
-        <Item key={i.data.title} title={i.data.title} link={i.data.url}></Item>
+        <Item key={i.data.title} title={i.data.title} link={i.data.permalink}></Item>
       )}
     </div>
   )

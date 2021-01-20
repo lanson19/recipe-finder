@@ -1,10 +1,42 @@
+html {
+  background-color: white;
+}
 .item {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 0;
-  background-color: lightblue;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-left: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: rgb(235, 233, 233);
 }
 
-.item h1 {
-  margin: 0;
+.item a,
+a:active,
+a:visited {
+  font-size: 35px;
+  text-decoration: none;
+  color: black;
+}
+
+.header {
+  padding-left: 15px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  color: white;
+  font-size: 60px;
+}
+
+.header--form {
+  font-size: 40px;
+  font-weight: bold;
+  padding-left: 15px;
+}
+
+.header--form input,
+input:focus {
+  font-size: 40px;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  color: black;
 }
