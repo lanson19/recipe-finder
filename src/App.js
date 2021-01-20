@@ -4,17 +4,19 @@ import React, {useState, useEffect} from 'react';
 
 function Header(props) {
   
+  function handleChange(event) {
+    props.onChange(event.target.value);
+  }
+
   return (
     <form>
       <label className="header--form">
         <a>R/</a>
-        <input type="text" placeholder={props.subredditTitle} spellCheck="false"/>
+        <input type="text" placeholder={props.value} onChange={handleChange} spellCheck="false"/>
       </label>
     </form>
   )
 }
-
-
 
 function Item(props) {
   const originalLink = "https://www.reddit.com"
@@ -33,7 +35,7 @@ function App() {
   const [subreddit, setSubreddit] = useState('leagueoflegends');
 
   useEffect(() => {
-    fetch("https://www.reddit.com/r/leagueoflegends.json").then(res => {
+    fetch("https://www.reddit.com/r/" + subreddit + ".json").then(res => {
       if (res.status != 200) {
         console.log("Error");
         return;
@@ -42,17 +44,19 @@ function App() {
       res.json().then(data => {
         if (data != null) {
           setArticles(data.data.children);
-          console.log(data.data.children);
+          console.log(subreddit);
         }
       });
     })
   },[articles])
 
-  
+  function handleChange(newValue) {
+    setSubreddit(newValue);
+  }
 
   return (
     <div>
-      <Header subredditTitle={subreddit}/>
+      <Header value={subreddit} onChange={handleChange}/>
       {articles.map((i) =>
         <Item key={i.data.title} title={i.data.title} link={i.data.permalink}></Item>
       )}
