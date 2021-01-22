@@ -9,12 +9,22 @@ function Header(props) {
   }
 
   return (
-    <form>
-      <label className="header--form">
-        <a>R/</a>
-        <input type="text" placeholder={props.value} onChange={handleChange} spellCheck="false"/>
-      </label>
-    </form>
+    <div className="header--class">
+      <form>
+        <label className="header--form">
+          <a>R/</a>
+          <input type="text" placeholder={props.value} onChange={handleChange} spellCheck="false"/>
+        </label>
+      </form>
+      <div class="dropdown">
+        <button class="dropbtn">SORT</button>
+        <div class="dropdown-content">
+          <a href="#">Hot</a>
+          <a href="#">New</a>
+          <a href="#">Top</a>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -32,10 +42,11 @@ function Item(props) {
 function App() {
 
   const [articles, setArticles] = useState([]);
-  const [subreddit, setSubreddit] = useState('leagueoflegends');
+  const [subreddit, setSubreddit] = useState("leagueoflegends");
+  const [sort, setSort] = useState("hot");
 
   useEffect(() => {
-    fetch("https://www.reddit.com/r/" + subreddit + ".json").then(res => {
+    fetch("https://www.reddit.com/r/" + subreddit + "/" + sort + ".json").then(res => {
       if (res.status != 200) {
         console.log("Error");
         return;
@@ -48,7 +59,7 @@ function App() {
         }
       });
     })
-  },[articles])
+  },[subreddit])
 
   function handleChange(newValue) {
     setSubreddit(newValue);
